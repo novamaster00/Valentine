@@ -1,0 +1,340 @@
+/* App-specific styles */
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Full height for all sections */
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Gradient radial for background effects */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+/* Heart glow effect enhancement */
+.heart-glow img {
+  transition: filter 0.3s ease-out;
+}
+
+.heart-glow:hover img {
+  filter: drop-shadow(0 0 25px rgba(230, 57, 70, 1)) 
+          drop-shadow(0 0 50px rgba(255, 215, 0, 0.8));
+}
+
+/* Glass card enhancement */
+.glass-card {
+  box-shadow: 
+    0 8px 32px rgba(230, 57, 70, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Message popup styling */
+.animate-message-unfold {
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  animation: message-unfold 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes message-unfold {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Particle burst animation enhancement */
+@keyframes particle-burst {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Confetti colors variation */
+.confetti:nth-child(3n) {
+  background: #e63946 !important;
+}
+.confetti:nth-child(3n+1) {
+  background: #ff6b81 !important;
+}
+.confetti:nth-child(3n+2) {
+  background: #ff8fa3 !important;
+}
+
+/* Performance optimizations */
+.heart-container {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+/* Smooth heart rendering */
+.heart-container img {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+/* Pulse glow animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Heartbeat animation */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(1.1);
+  }
+  20%, 40% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Confetti fall animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Unfold animation */
+@keyframes unfold {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-unfold {
+  animation: unfold 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Fade up animation */
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+/* Elastic scale animation */
+@keyframes elastic-scale {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-elastic-scale {
+  animation: elastic-scale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Text glow animation */
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(230, 57, 70, 0.8), 0 0 60px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.animate-text-glow {
+  animation: text-glow 2s ease-in-out infinite;
+}
+
+/* Flee animation for No button */
+@keyframes flee {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.animate-flee {
+  animation: flee 0.3s ease-in-out;
+}
+
+/* Glitch animation for No button */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s linear infinite;
+}
+
+/* Implode animation */
+@keyframes implode {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-implode {
+  animation: implode 0.5s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heart-container img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .font-display {
+    line-height: 1.2;
+  }
+}
+
+/* Touch device optimizations */
+@media (pointer: coarse) {
+  .heart-container:hover {
+    transform: none;
+  }
+  
+  .heart-container:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom cursor for interactive elements */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Loading state */
+.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Prevent text selection on interactive elements */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Hardware acceleration for smooth animations */
+.heart-container,
+.animate-message-unfold,
+.animate-elastic-scale,
+.animate-fade-up {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Optimize rendering performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
