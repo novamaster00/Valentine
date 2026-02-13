@@ -577,7 +577,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
     { time: 2340, text: "Yaado Na Baval Ne" },
     { time: 11090, text: "Aavya Phool Re Have" },
     { time: 18820, text: "Tu Aave To" },
-    { time: 23080, text: "Duniyaaa..." },
+    { time: 23020, text: "Duniyaaa..." },
     { time: 27500, text: "Aakhi..." },
     { time: 30380, text: "Dhul Re Have" },
   ];
