@@ -341,12 +341,12 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
     // Clear message after delay
     setTimeout(() => {
       setShowMessage(null);
-    }, 2500);
+    }, 4000);
 
     // Remove particles from array
     setTimeout(() => {
       setBurstParticles(prev => prev.filter(p => p.id !== particleId));
-    }, 600);
+    }, 900);
   };
 
   // Check if all hearts are popped
@@ -579,7 +579,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
     { time: 18820, text: "Tu Aave To" },
     { time: 23020, text: "Duniyaaa..." },
     { time: 27500, text: "Aakhi..." },
-    { time: 30380, text: "Dhul Re Have" },
+    { time: 29990, text: "Dhul Re Have" },
   ];
 
   useEffect(() => {
@@ -798,7 +798,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
               </h2>
 
               <p className="font-body text-lg text-valentine-pink mb-8">
-                — For DRUVISA 💕
+                — For SMITA 💕
               </p>
             </div>
           )}
@@ -915,7 +915,7 @@ const SuccessPage = () => {
         </div>
 
         <p className="font-display text-2xl text-valentine-red mt-1">
-          DRUVISA ❤️
+          SMITA ❤️
         </p>
       </div>
     </div>
