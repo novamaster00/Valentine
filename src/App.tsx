@@ -230,9 +230,17 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
   const heartPopAudioRef = useRef<HTMLAudioElement | null>(null);
+  const messageTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     heartPopAudioRef.current = new Audio('/Heart_pop_sound-402323.mp3');
+    
+    // Cleanup function to clear message timer on unmount
+    return () => {
+      if (messageTimerRef.current) {
+        clearTimeout(messageTimerRef.current);
+      }
+    };
   }, []);
 
   // Sequential rendering - make hearts visible one by one
@@ -310,7 +318,8 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
   }, [showMessage]);
 
   const handleHeartClick = (heart: Heart, event: React.MouseEvent) => {
-    if (heart.popped) return;
+    // Prevent clicking if heart is already popped OR if a message is currently showing
+    if (heart.popped || showMessage) return;
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -338,9 +347,15 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
     // Mark heart as popped
     setHearts(prev => prev.map(h => h.id === heart.id ? { ...h, popped: true } : h));
 
+    // Clear any existing message timer to prevent race conditions
+    if (messageTimerRef.current) {
+      clearTimeout(messageTimerRef.current);
+    }
+
     // Clear message after delay
-    setTimeout(() => {
+    messageTimerRef.current = setTimeout(() => {
       setShowMessage(null);
+      messageTimerRef.current = null;
     }, 4000);
 
     // Remove particles from array
