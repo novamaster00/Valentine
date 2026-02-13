@@ -307,6 +307,168 @@ button:active {
   }
 }
 
+
+/* Typewriter effects */
+
+/* Landing page typewriter */
+.typewriter-landing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid #e63946;
+  letter-spacing: 0.05em;
+  animation:
+    typing-landing 3s steps(30, end) forwards,
+    blink-caret-landing 0.75s step-end 4;
+  animation-fill-mode: both;
+}
+
+@keyframes typing-landing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret-landing {
+  from, to { border-color: transparent; }
+  50% { border-color: #e63946; }
+}
+
+/* Pre-question typewriter */
+.typewriter-prequestion {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid #e63946;
+  letter-spacing: 0.05em;
+  animation:
+    typing-prequestion 2.5s steps(30, end) forwards,
+    blink-caret-prequestion 0.75s step-end 3;
+  animation-fill-mode: both;
+}
+
+@keyframes typing-prequestion {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret-prequestion {
+  from, to { border-color: transparent; }
+  50% { border-color: #e63946; }
+}
+
+/* ===============================
+   FULLSCREEN LYRICS STAGE
+   =============================== */
+
+.lyrics-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  /* IMPORTANT: keep background transparent */
+  background: transparent;
+
+}
+
+/* Soft glow behind text */
+.lyrics-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.767),
+    transparent 60%
+  );
+  filter: blur(50px);
+  z-index: 0;
+}
+
+
+@keyframes bgFloat {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* ===============================
+   LYRICS STACK (COLUMN)
+   =============================== */
+
+.lyrics-container {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 18px;
+}
+
+/* ===============================
+   INDIVIDUAL LYRIC LINE
+   =============================== */
+/* Lyrics typewriter - each line types individually */
+.lyric-line {
+  display: block;
+  text-align: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.12em solid #e63946;
+  letter-spacing: 0.12em;
+
+  font-size: 2rem;
+  color: #e63946;
+
+  text-shadow:
+    0 0 10px rgba(230, 57, 70, 0.45),
+    0 0 30px rgba(230, 57, 70, 0.25);
+
+  animation:
+    typing 1.8s steps(50, end) forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+/* typing animation */
+@keyframes typing {
+  from { width: 0; }
+  to { width: var(--line-width); }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #e63946; }
+}
+
+/* Mobile adjustments for lyrics */
+@media (max-width: 640px) {
+  .lyric-line {
+    font-size: 2.15rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (min-width: 768px) {
+  .lyric-line {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lyric-line {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .lyric-line {
+    font-size: 4rem;
+  }
+}
 /* Custom cursor for interactive elements */
 .cursor-pointer {
   cursor: pointer;
