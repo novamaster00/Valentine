@@ -466,7 +466,7 @@ button:active {
 
 @media (min-width: 1280px) {
   .lyric-line {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 }
 /* Custom cursor for interactive elements */

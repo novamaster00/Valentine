@@ -570,7 +570,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
   const [isPlayingSong, setIsPlayingSong] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const angryGifs = ['Angry_1.gif', 'Angry_2.gif', 'Angry_4.gif'];
+  const angryGifs = ['Angry_1.gif', 'Angry_2.gif', 'Angry_3.gif','Angry_4.gif'];
   
   // Lyrics with timestamps (in milliseconds)
   const lyrics = [
