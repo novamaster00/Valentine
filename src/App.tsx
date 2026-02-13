@@ -82,7 +82,7 @@ const BurstParticles = ({ x, y, color, onComplete }: { x: number; y: number; col
     }
     setParticles(newParticles);
 
-    const timer = setTimeout(onComplete, 600);
+    const timer = setTimeout(onComplete, 2000);
     return () => clearTimeout(timer);
   }, [color, onComplete]);
 
@@ -565,9 +565,9 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
   const [showText, setShowText] = useState(true);
   const [showButtons, setShowButtons] = useState(true);
   const [showDialog, setShowDialog] = useState(true);
-  const [proposalText, setProposalText] = useState("Druvisa will you be my valentine?");
+  const [proposalText] = useState("Druvisa will you be my valentine?");
   const [isFinalPhase, setIsFinalPhase] = useState(false);
-  const [isPlayingSong, setIsPlayingSong] = useState(false);
+  const [, setIsPlayingSong] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const angryGifs = ['Angry_1.gif', 'Angry_2.gif', 'Angry_3.gif','Angry_4.gif'];
@@ -753,7 +753,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
       {showLyrics && (
   <div className="lyrics-stage">
     <div className="lyrics-container">
-      {displayedLyrics.map((line, index) => (
+      {displayedLyrics.map((line) => (
         <p
           key={line.id}
           className="lyric-line font-display"
