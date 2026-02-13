@@ -565,7 +565,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
   const [showText, setShowText] = useState(true);
   const [showButtons, setShowButtons] = useState(true);
   const [showDialog, setShowDialog] = useState(true);
-  const [proposalText] = useState("Druvisa will you be my valentine?");
+  const [proposalText] = useState("Will you be my valentine?");
   const [isFinalPhase, setIsFinalPhase] = useState(false);
   const [, setIsPlayingSong] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
