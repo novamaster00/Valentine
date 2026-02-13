@@ -192,16 +192,18 @@ const LandingPage = ({ onTap }: { onTap: () => void }) => {
       </div>
 
       {/* Main content */}
-      <div className={`relative z-10 text-center px-4 ${isExiting ? 'animate-implode' : ''}`}>
-        <h1 
-          className="font-display text-5xl md:text-7xl lg:text-8xl text-valentine-red mb-6 animate-unfold"
-          style={{ textShadow: '2px 2px 4px rgba(230, 57, 70, 0.3)' }}
-        >
-          look i made something for you
-        </h1>
+      <div className={`relative z-10 text-center px-4 max-w-4xl mx-auto ${isExiting ? 'animate-implode' : ''}`}>
+        <div className="overflow-hidden flex justify-center">
+          <h1 
+            className="typewriter-landing font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-valentine-red mb-6"
+            style={{ textShadow: '2px 2px 4px rgba(230, 57, 70, 0.3)' }}
+          >
+            look i made something for you
+          </h1>
+        </div>
         <p 
           className="font-body text-lg md:text-xl text-valentine-pink animate-fade-up"
-          style={{ animationDelay: '1s', animationFillMode: 'both' }}
+          style={{ animationDelay: '3.5s', animationFillMode: 'both', opacity: 0 }}
         >
           ( tap on the screen )
         </p>
@@ -227,6 +229,11 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
   const [showMessage, setShowMessage] = useState<{ id: number; message: string; x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
+  const heartPopAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    heartPopAudioRef.current = new Audio('/Heart_pop_sound-402323.mp3');
+  }, []);
 
   // Sequential rendering - make hearts visible one by one
   useEffect(() => {
@@ -314,6 +321,12 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
       pink: '#ff6b81',
       light: '#ff8fa3',
     };
+
+    // Play heart pop sound
+    if (heartPopAudioRef.current) {
+      heartPopAudioRef.current.currentTime = 0;
+      heartPopAudioRef.current.play().catch(err => console.log('Audio play failed:', err));
+    }
 
     // Add burst particles
     const particleId = Date.now();
@@ -446,28 +459,16 @@ const HeartGarden = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-// Section 3: Proposal Dialog
-const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }) => {
-  const [noText, setNoText] = useState('No');
-  const [isFleeing, setIsFleeing] = useState(false);
-  const [glitching, setGlitching] = useState(false);
+// Section 3a: Pre-question Dialog (May I ask you a question?)
+const PreQuestionDialog = ({ onYes }: { onYes: () => void }) => {
+  const [noButtonSize, setNoButtonSize] = useState(100);
+  const [yesButtonSize, setYesButtonSize] = useState(100);
 
   const handleNoClick = () => {
-    setGlitching(true);
-    
-    // Glitch effect - change to YES temporarily
-    setNoText('YES');
-    
-    setTimeout(() => {
-      setNoText('No');
-      setGlitching(false);
-      onNo();
-    }, 500);
-  };
-
-  const handleNoHover = () => {
-    setIsFleeing(true);
-    setTimeout(() => setIsFleeing(false), 500);
+    // Shrink the No button
+    setNoButtonSize(prev => Math.max(prev - 15, 20));
+    // Grow the Yes button
+    setYesButtonSize(prev => prev + 20);
   };
 
   return (
@@ -495,7 +496,7 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
       </div>
 
       {/* Main card */}
-      <div className="relative z-10 glass-card rounded-3xl shadow-2xl p-8 md:p-12 max-w-lg w-full text-center animate-elastic-scale">
+      <div className="relative z-10 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 md:p-12 max-w-lg w-full mx-4 text-center animate-elastic-scale">
         {/* Decorative hearts */}
         <div className="absolute -top-6 left-1/2 -translate-x-1/2">
           <div className="animate-heartbeat">
@@ -505,37 +506,327 @@ const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }
           </div>
         </div>
 
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-valentine-red mt-6 mb-4 animate-text-glow">
-          will you be my valentine?
-        </h2>
+        {/* GIF */}
+        <div className="mb-6 mt-4">
+          <img 
+            src="/May_i_ask_you_a_question_GIFs.gif" 
+            alt="May I ask you a question?"
+            className="w-full max-w-xs mx-auto rounded-2xl shadow-lg"
+          />
+        </div>
 
-        <p className="font-body text-lg text-valentine-pink mb-8">
-          — For DRUVISA 💕
-        </p>
+        <div className="overflow-hidden flex justify-center mb-8">
+          <h2 className="typewriter-prequestion font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-valentine-red animate-text-glow">
+            may i ask you a question?
+          </h2>
+        </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 justify-center items-center">
+        <div className="flex gap-4 justify-center items-center relative">
           <button
             onClick={onYes}
             className="px-8 py-3 bg-valentine-red text-white font-body font-semibold rounded-full 
                      shadow-lg shadow-valentine-red/30 hover:shadow-valentine-red/50 
-                     hover:scale-110 hover:bg-valentine-pink transition-all duration-300
-                     animate-pulse"
+                     hover:bg-valentine-pink transition-all duration-300
+                     animate-pulse relative z-10"
+            style={{
+              transform: `scale(${yesButtonSize / 100})`,
+              transformOrigin: 'center',
+            }}
           >
             Yes 💖
           </button>
 
           <button
             onClick={handleNoClick}
-            onMouseEnter={handleNoHover}
-            className={`px-8 py-3 bg-gray-200 text-gray-600 font-body font-semibold rounded-full 
-                     shadow-lg hover:bg-gray-300 transition-all duration-300
-                     ${isFleeing ? 'animate-flee' : ''} ${glitching ? 'animate-glitch' : ''}`}
+            className="px-8 py-3 bg-gray-200 text-gray-600 font-body font-semibold rounded-full 
+                     shadow-lg hover:bg-gray-300 transition-all duration-300"
+            style={{
+              transform: `scale(${noButtonSize / 100})`,
+              transformOrigin: 'center',
+            }}
           >
-            {noText}
+            No
           </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+// Section 3: Proposal Dialog
+const ProposalDialog = ({ onYes, onNo }: { onYes: () => void; onNo: () => void }) => {
+  const [noClickCount, setNoClickCount] = useState(0);
+  const [currentGif, setCurrentGif] = useState("Will_you_be_my_valentine_GIFs.gif");
+  const [showTransitionText, setShowTransitionText] = useState(false);
+  const [showLyrics, setShowLyrics] = useState(false);
+  const [displayedLyrics, setDisplayedLyrics] = useState<{ id: number; text: string }[]>([]);
+  const [showGif, setShowGif] = useState(true);
+  const [showText, setShowText] = useState(true);
+  const [showButtons, setShowButtons] = useState(true);
+  const [showDialog, setShowDialog] = useState(true);
+  const [proposalText, setProposalText] = useState("Druvisa will you be my valentine?");
+  const [isFinalPhase, setIsFinalPhase] = useState(false);
+  const [isPlayingSong, setIsPlayingSong] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const angryGifs = ['Angry_1.gif', 'Angry_2.gif', 'Angry_4.gif'];
+  
+  // Lyrics with timestamps (in milliseconds)
+  const lyrics = [
+    { time: 2340, text: "Yaado Na Baval Ne" },
+    { time: 11090, text: "Aavya Phool Re Have" },
+    { time: 18820, text: "Tu Aave To" },
+    { time: 23080, text: "Duniyaaa..." },
+    { time: 27500, text: "Aakhi..." },
+    { time: 30380, text: "Dhul Re Have" },
+  ];
+
+  useEffect(() => {
+    audioRef.current = new Audio('/Vhalam Aavo Ne.mp3');
+  }, []);
+
+ const playSongWithLyrics = (onComplete: () => void) => {
+  setIsPlayingSong(true);
+  setShowLyrics(true);
+  setDisplayedLyrics([]);
+
+  setTimeout(() => {
+    if (!audioRef.current) return;
+
+    audioRef.current.currentTime = 0;
+    audioRef.current.volume = 0; // Start at 0 volume
+    audioRef.current.play().catch(console.log);
+
+    // Gradually increase volume from 0 to 1 over 1.5 seconds
+    const fadeDuration = 1500; // 1.5 seconds in milliseconds
+    const fadeSteps = 30; // Number of volume adjustments
+    const fadeInterval = fadeDuration / fadeSteps; // Time between each step
+    const volumeIncrement = 1 / fadeSteps; // Volume to add each step
+    
+    let currentStep = 0;
+    const fadeInInterval = setInterval(() => {
+      if (audioRef.current && currentStep < fadeSteps) {
+        currentStep++;
+        audioRef.current.volume = Math.min(currentStep * volumeIncrement, 1);
+      } else {
+        clearInterval(fadeInInterval);
+      }
+    }, fadeInterval);
+
+    // Display lyrics one at a time, accumulating them
+    lyrics.forEach((lyric, index) => {
+      setTimeout(() => {
+        setDisplayedLyrics(prev => [
+          ...prev,
+          { id: index, text: lyric.text }
+        ]);
+      }, lyric.time);
+    });
+
+    audioRef.current.onended = () => {
+      clearInterval(fadeInInterval); // Clean up interval
+      setIsPlayingSong(false);
+      setShowLyrics(false);
+      setDisplayedLyrics([]);
+      onComplete();
+    };
+  }, 1000);
+};
+
+
+  const handleNoClick = () => {
+    if (noClickCount < 4) {
+      const newCount = noClickCount + 1;
+      setNoClickCount(newCount);
+      
+      // Change to angry GIF temporarily, then back to valentine GIF
+      setCurrentGif(angryGifs[newCount - 1]);
+      setTimeout(() => {
+        setCurrentGif("Will_you_be_my_valentine_GIFs.gif");
+      }, 1500);
+
+      if (newCount === 4) {
+        // After 4th no - fade everything one by one (1.5sec total), show transition text, play song with lyrics
+        setTimeout(() => {
+          // Fade gif first
+          setShowGif(false);
+          
+          setTimeout(() => {
+            // Fade text
+            setShowText(false);
+            
+            setTimeout(() => {
+              // Fade buttons
+              setShowButtons(false);
+              
+              setTimeout(() => {
+                // Fade dialog box
+                setShowDialog(false);
+                
+                setTimeout(() => {
+                  // Show transition text
+                  setShowTransitionText(true);
+                  
+                  setTimeout(() => {
+                    // Hide transition text and play song with lyrics
+                    setShowTransitionText(false);
+                    
+                    playSongWithLyrics(() => {
+                      // After song ends, fade lyrics and show proposal
+                      setTimeout(() => {
+                        setShowText(true);
+                        setShowButtons(true);
+                        setShowDialog(true);
+                        setIsFinalPhase(true);
+                      }, 500);
+                    });
+                  }, 1000);
+                }, 500);
+              }, 375);
+            }, 375);
+          }, 375);
+        }, 1000);
+      }
+    } else {
+      // After 4th no in final phase, it's up to her
+      onNo();
+    }
+  };
+
+  const handleYesClick = () => {
+    if (noClickCount < 4) {
+      // Yes clicked before 4 no's - hide dialog, play song with lyrics, then show confetti
+      setShowGif(false);
+      setShowText(false);
+      setShowButtons(false);
+      setShowDialog(false);
+      
+      setTimeout(() => {
+        playSongWithLyrics(() => {
+          // After song ends, show confetti
+          setTimeout(() => {
+            onYes();
+          }, 500);
+        });
+      }, 500);
+    } else {
+      // After 4 no's (final phase) - just go to confetti (song already played)
+      onYes();
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-valentine-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background overlay */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+
+      {/* Floating background hearts */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute opacity-10"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `float ${4 + Math.random() * 2}s ease-in-out infinite`,
+            }}
+          >
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#e63946">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+        ))}
+      </div>
+
+      {/* Transition Text - "let me try in different way" */}
+      {showTransitionText && (
+        <div className="relative z-20 text-center animate-fade-up">
+          <h1 className="font-display text-5xl md:text-7xl text-valentine-red animate-text-glow">
+            let me try in different way
+          </h1>
+        </div>
+      )}
+
+      {/* Lyrics Display */}
+      {showLyrics && (
+  <div className="lyrics-stage">
+    <div className="lyrics-container">
+      {displayedLyrics.map((line, index) => (
+        <p
+          key={line.id}
+          className="lyric-line font-display"
+          style={{
+            "--line-width": `${line.text.length * 1.8}ch`,
+          } as React.CSSProperties}
+        >
+          {line.text}
+        </p>
+      ))}
+    </div>
+  </div>
+)}
+
+      {/* Main card */}
+      {showDialog && (
+        <div className={`relative z-10 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 max-w-lg w-full text-center animate-elastic-scale transition-opacity duration-500 ${showDialog ? 'opacity-100' : 'opacity-0'}`}>
+          {/* Decorative hearts */}
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2">
+            <div className="animate-heartbeat">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="#e63946" className="drop-shadow-lg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* GIF - show in first phase only */}
+          {!isFinalPhase && showGif && (
+            <div className={`mb-6 mt-4 transition-opacity duration-375 ${showGif ? 'opacity-100' : 'opacity-0'}`}>
+              <img 
+                src={`/${currentGif}`}
+                alt="Valentine GIF"
+                className="w-full max-w-xs mx-auto rounded-2xl shadow-lg"
+              />
+            </div>
+          )}
+
+          {showText && (
+            <div className={`transition-opacity duration-375 ${showText ? 'opacity-100' : 'opacity-0'}`}>
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-valentine-red mt-6 mb-4 animate-text-glow">
+                {proposalText}
+              </h2>
+
+              <p className="font-body text-lg text-valentine-pink mb-8">
+                — For DRUVISA 💕
+              </p>
+            </div>
+          )}
+
+          {/* Buttons */}
+          {showButtons && (
+            <div className={`flex gap-4 justify-center items-center transition-opacity duration-375 ${showButtons ? 'opacity-100' : 'opacity-0'}`}>
+              <button
+                onClick={handleYesClick}
+                className="px-8 py-3 bg-valentine-red text-white font-body font-semibold rounded-full 
+                         shadow-lg shadow-valentine-red/30 hover:shadow-valentine-red/50 
+                         hover:scale-110 hover:bg-valentine-pink transition-all duration-300
+                         animate-pulse"
+              >
+                Yes 💖
+              </button>
+
+              <button
+                onClick={handleNoClick}
+                className="px-8 py-3 bg-gray-200 text-gray-600 font-body font-semibold rounded-full 
+                         shadow-lg hover:bg-gray-300 transition-all duration-300"
+              >
+                No
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -573,6 +864,21 @@ const SuccessPage = () => {
       </div>
 
       {/* Main content */}
+      <div className="relative z-10 flex justify-center px-6">
+  <div
+    className="
+      max-w-3xl w-full
+      rounded-3xl
+      px-10 py-14
+      text-center
+
+      bg-pink-50/80
+      backdrop-blur-md
+
+      border border-pink-200
+      shadow-[0_0_40px_rgba(230,57,70,0.18)]
+    "
+  >
       <div className="relative z-10 text-center animate-fade-up">
         <div className="text-6xl md:text-8xl mb-6 animate-bounce">
           🎉💕🎊
@@ -608,11 +914,13 @@ const SuccessPage = () => {
           </div>
         </div>
 
-        <p className="font-display text-2xl text-valentine-red mt-8">
+        <p className="font-display text-2xl text-valentine-red mt-1">
           DRUVISA ❤️
         </p>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 
@@ -642,7 +950,7 @@ const NoResponseModal = ({ onClose }: { onClose: () => void }) => {
 
 // Main App Component
 function App() {
-  const [currentSection, setCurrentSection] = useState<'landing' | 'hearts' | 'proposal' | 'success'>('landing');
+  const [currentSection, setCurrentSection] = useState<'landing' | 'hearts' | 'prequestion' | 'proposal' | 'success'>('landing');
   const [showNoModal, setShowNoModal] = useState(false);
 
   const handleLandingTap = useCallback(() => {
@@ -650,6 +958,10 @@ function App() {
   }, []);
 
   const handleHeartsComplete = useCallback(() => {
+    setCurrentSection('prequestion');
+  }, []);
+
+  const handlePreQuestionYes = useCallback(() => {
     setCurrentSection('proposal');
   }, []);
 
@@ -669,6 +981,7 @@ function App() {
     <div className="w-full min-h-screen">
       {currentSection === 'landing' && <LandingPage onTap={handleLandingTap} />}
       {currentSection === 'hearts' && <HeartGarden onComplete={handleHeartsComplete} />}
+      {currentSection === 'prequestion' && <PreQuestionDialog onYes={handlePreQuestionYes} />}
       {currentSection === 'proposal' && <ProposalDialog onYes={handleYes} onNo={handleNo} />}
       {currentSection === 'success' && <SuccessPage />}
       
